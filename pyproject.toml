@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling","hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "antriksh1984.github.io/GTA3-WASM"
+version = "0.0.1"
+authors = [
+  { name="Antriksh" },
+  { name="Divam" },
+]
+description = "UCS503 : Software Engineering : GTA3-WASM Project"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    # See: https://pypi.org/classifiers/
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/Antriksh1984/GTA3-WASM"
+Issues = "https://github.com/Antriksh1984/GTA3-WASM/issues"
+# THE END -------------------------------------------

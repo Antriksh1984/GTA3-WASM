@@ -1,0 +1,106 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+% -----------------------------------------------------
+% bvraghav-tiet-ucs503p-article.sty
+% -----------------------------------------------------
+
+% Variable: Lab Instructor
+\makeatletter \newcommand{\BvrSetLabInstructor}[1]{%
+  \gdef\Bvr@LabInstructor{#1}}
+% default
+\newcommand{\Bvr@LabInstructor}{Dr. Raghav %
+  B. Venkataramaiyer}
+% public accessor
+\newcommand{\BvrLabInstructorValue}{\Bvr@LabInstructor}
+\makeatother
+
+% Add subtitle
+\usepackage{titling}
+% -- Set title bold
+\pretitle{\begin{center}\bfseries\fontsize{18bp}{18bp}\selectfont}
+\makeatletter
+\newcommand{\BvrSubtitle}[1]{%
+  \posttitle{%
+    \par\end{center}
+    \begin{center}\large#1\end{center}
+    \vskip 0.5em}%
+}
+\makeatother
+
+% Hints in the section title(s)
+\newcommand{\BvrHint}[1]{%
+  {\normalfont\normalsize\itshape\hfill #1}}
+
+% -----------------------------------------------------
+
+\title{GTA3-WASM: TODO (working title)}
+
+\BvrSetLabInstructor{Dr. Raghav B. Venkataramaiyer}
+
+\BvrSubtitle{%
+  Project Proposal for UCS503P  \\
+  Submitted to: \BvrLabInstructorValue \\ \bfseries
+  Thapar Institute of Engineering and Technology%
+}
+
+\author{
+  Antriksh, CSED%
+  \thanks{Roll No: \texttt{1024031034}, %
+    Email: \texttt{TODO\_be24\@thapar.edu}}
+  \and
+  Divam, CSED%
+  \thanks{Roll No: \texttt{1024031032}, %
+    Email: \texttt{TODO\_be24\@thapar.edu}}
+}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Higher-order goal%
+  \BvrHint{\ldots secondary framing}}
+TODO
+
+\section{Time-to-value %
+\BvrHint{\ldots primary heuristic}}
+TODO
+
+\section{Problem Statement}
+TODO
+
+\section{Proposed Solution %
+\BvrHint{\ldots Software Proposition}}
+TODO
+
+\section{Solution Approach %
+\BvrHint{\ldots Engineering focus}}
+TODO
+
+\section{Evaluation Criterion %
+\BvrHint{\ldots measurable and attributable}}
+TODO
+
+\section{Scalability %
+\BvrHint{\ldots with foresight}}
+TODO
+
+\section{Engine availability heuristic}
+TODO
+
+\section{Project scope and deliverables %
+\BvrHint{\ldots iteration-friendly}}
+TODO
+
+\section{Risks and mitigations}
+TODO
+
+\section{Summary}
+TODO
+
+\end{document}

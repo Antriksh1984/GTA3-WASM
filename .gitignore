@@ -1,0 +1,59 @@
+# Build output
+/build-wasm/
+/build-native/
+/build/
+
+# GTA III game data. NEVER commit this. gamefiles/ is where a user's own legally
+# obtained installation is conventionally placed (see docs/GAME_ASSETS.md and
+# CMakeLists.txt's `install(DIRECTORY gamefiles/ ...)`); its contents belong to
+# Take-Two/Rockstar, not this repository. Engine-owned config in this directory
+# (gta3.ini, gamecontrollerdb.txt, ReadMe, etc.) is small enough to allowlist
+# explicitly below instead of trying to ignore-list every possible asset file.
+/gamefiles/*
+!/gamefiles/gta3.ini
+!/gamefiles/gamecontrollerdb.txt
+!/gamefiles/ReadMe/
+!/gamefiles/Website/
+!/gamefiles/installscript.vdf
+
+# Generated WASM module output (rebuilt by `cmake --build build-wasm --target
+# re3_wasm`, see docs/WASM_BUILD.md) -- not source.
+/web/build/
+
+# Any local asset package (task 7, see docs/GAME_ASSETS.md) or dev-mount cache --
+# these would contain real GTA III bytes if they existed, so they must never be
+# committed even though nothing in this repo currently generates them by default.
+/web/build/package/
+*.gamedata/
+*.idbfs-export/
+
+# Editor/OS cruft
+.DS_Store
+Thumbs.db
+
+# --- Docs/reports scaffolding (mkdocs, LaTeX) -----------------------------
+
+# mkdocs site build output and local dev cache
+/site
+.cache
+
+# Icons fetched on demand by `make icons` (see Makefile)
+assets/icons/
+
+# Python (docs tooling)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# LaTeX build artifacts (project-proposal/, project-report-*/)
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.xdv

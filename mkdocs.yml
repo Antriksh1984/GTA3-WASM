@@ -1,0 +1,70 @@
+site_name: "UCS503 : Software Engineering : GTA3-WASM"
+site_url: https://antriksh1984.github.io/GTA3-WASM
+
+plugins:
+- search
+- literate-nav:
+    nav_file: summary.md
+- section-index
+- git-revision-date-localized
+- git-authors
+
+theme:
+  name: material
+  custom_dir: docs/assets/theme-overrides
+  features:
+    - navigation.footer
+    - header.autohide
+    - content.tabs.link
+    - navigation.tracking
+    - navigation.top
+    - toc.integrate
+    - content.tooltips
+  icon:
+    repo: fontawesome/brands/github
+    annotation: material/plus-circle-outline
+  palette:
+    primary: amber
+    accent: orange
+  logo: assets/tiet-logo.svg
+  favicon: assets/favicon.png
+
+repo_url: https://github.com/Antriksh1984/GTA3-WASM
+repo_name: GTA3-WASM
+copyright: "Copyright &copy; 2026 Antriksh &amp; Divam"
+extra:
+  social:
+  - icon: fontawesome/brands/github
+    link: https://github.com/Antriksh1984/GTA3-WASM
+    name: Git Repo for GTA3-WASM
+
+extra_css:
+  - assets/stylesheets/extra.css
+
+markdown_extensions:
+  - abbr
+  - md_in_html
+  - attr_list
+  - toc:
+      permalink: true
+  - footnotes
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - toc:
+      toc_depth: 4
+  - sane_lists
