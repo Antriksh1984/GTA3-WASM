@@ -79,3 +79,92 @@ credit for the reverse-engineered engine itself belongs to the `re3`/
 GTAmodding contributors; this repository's original contribution is the
 WebAssembly/browser port (build tooling, browser runtime shims, input,
 audio, saves, and the web frontend under `web/`).
+
+**System Architecture & Project Diagrams**
+
+**1. Project Roadmap**
+```mermaid
+flowchart LR
+    subgraph P1 [Phase 1: Setup and WASM Toolchain]
+        direction TB
+        A1[Setup Build System and Transpiler]
+        A2[Establish WebGL and JS Bindings]
+        A3[Verify WASM Canvas Render]
+        A1 --> A2 --> A3
+    end
+
+    subgraph P2 [Phase 2: Asset Parsing and VFS Layer]
+        direction TB
+        B1[File Loader and Asset Caching]
+        B2[Parse GTA 3 Asset Formats]
+        B3[VFS Stream Manager]
+        B1 --> B2 --> B3
+    end
+
+    subgraph P3 [Phase 3: Engine Subsystems and Optimization]
+        direction TB
+        C1[WebGL 3D Rendering]
+        C2[Physics and Collision]
+        C3[Web Audio and Gamepad Mapping]
+        C1 --> C2 --> C3
+    end
+
+    P1 --> P2 --> P3
+```
+
+**2. System Architecture (Use Case Diagram)**
+```mermaid
+flowchart LR
+    Player[Player]
+    Browser[Browser Engine]
+    Storage[(IndexedDB Storage)]
+
+    subgraph System [GTA 3 WASM System Boundary]
+        UC1[Bootstrap WASM Module]
+        UC2[Fetch and Cache Game Assets]
+        UC3[Parse 3D Models and Textures]
+        UC4[Process Input and Physics Tick]
+        UC5[Render 3D Frame via WebGL]
+        UC6[Save Progress to Storage]
+    end
+
+    Player --> UC4
+    Player --> UC6
+
+    Browser --> UC1
+    Browser --> UC4
+
+    UC1 --> UC2
+    UC2 --> Storage
+    UC2 --> UC3
+    UC4 --> UC5
+    UC5 --> Browser
+    UC6 --> Storage
+```
+
+**3. Execution Lifecycle (Activity Diagram)**
+```mermaid
+flowchart TD
+    Start([User Opens Web Page]) --> LoadWasm[Fetch WASM Binary and JS Glue]
+    LoadWasm --> InitJVM[Instantiate WASM Memory]
+    InitJVM --> CheckCache{Assets in Cache?}
+    
+    CheckCache -->|No| DownloadAssets[Fetch Game Assets via HTTP]
+    DownloadAssets --> CacheAssets[Store Assets in IndexedDB]
+    CacheAssets --> MountFS[Load Asset Bytes into Memory]
+    
+    CheckCache -->|Yes| MountFS
+    
+    MountFS --> ParseData[Process Textures and 3D Meshes]
+    ParseData --> InitWebGL[Initialize WebGL Context]
+    InitWebGL --> AttachLoop[Register Main Loop]
+    
+    AttachLoop --> FrameTick([Frame Tick Started])
+    FrameTick --> PollInput[Poll Keyboard and Gamepad]
+    PollInput --> UpdatePhysics[Update Physics and AI]
+    UpdatePhysics --> UploadTextures[Upload Textures to WebGL]
+    UploadTextures --> RenderScene[Execute WebGL Draw Calls]
+    RenderScene --> PlayAudio[Dispatch Web Audio Buffers]
+    PlayAudio --> YieldBrowser[Yield Execution to Browser]
+    YieldBrowser --> FrameTick
+```
