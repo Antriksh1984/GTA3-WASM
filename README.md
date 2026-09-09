@@ -79,14 +79,3 @@ credit for the reverse-engineered engine itself belongs to the `re3`/
 GTAmodding contributors; this repository's original contribution is the
 WebAssembly/browser port (build tooling, browser runtime shims, input,
 audio, saves, and the web frontend under `web/`).
-
-## System Architecture & Project Diagrams
-
-### 1. Project Gantt Chart
-<img width="8192" height="1516" alt="Gantt Chart" src="https://github.com/user-attachments/assets/fc512280-c2d2-4a7f-9213-10faf54dcf68" />
-
-### 2. System Architecture (Use Case Diagram)
-<img width="8192" height="3536" alt="Use Case Diagram" src="https://github.com/user-attachments/assets/74539cd4-459d-4eac-91b8-4a771cd75b86" />
-
-### 3. Execution Lifecycle (Activity Diagram)
-<img width="1438" height="8192" alt="Acitvity Diagram" src="https://github.com/user-attachments/assets/e91256a9-867c-4f58-a853-792e0f0903f8" />
