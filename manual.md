@@ -6,13 +6,6 @@ browser tab via WebGL2 -- no native install, no plugin. This manual covers
 building it, getting it running locally, and playing it. It does not cover
 engine internals; see `docs/` for that (pointers at the bottom).
 
-## Legal requirement
-
-**This repository does not contain, download, or distribute any GTA III game
-data.** You need your own legally obtained copy of GTA III (Steam, GOG, a
-retail disc, etc.) -- this port only reads the same data files the original
-PC game ships with, from wherever you point it.
-
 ## 1. Prerequisites
 
 - **Emscripten SDK (emsdk)** -- installed and activated. This repo already
