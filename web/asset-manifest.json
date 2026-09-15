@@ -1,0 +1,68 @@
+{
+  "$comment": "Canonical list of filesystem paths re3 touches, grouped by category (see docs/GAME_ASSETS.md). Contains only relative *paths*, never asset content -- paths are not copyrighted. Consumed by scripts/validate_assets.py (native pre-flight check) and web/vfs.js (in-browser validation before handing off to the engine). Paths are relative to the configured asset root (default mount point /game) and are matched case-insensitively, mirroring src/skel/crossplatform.cpp's casepath().",
+
+  "gameAssets": {
+    "$comment": "Real GTA III data. Never generated, packaged, or committed by this repo -- the user supplies their own legally obtained copy. 'required' entries are hard dependencies the engine asserts/crashes without (see docs/GAME_ASSETS.md for the exact source line of each); 'optional' entries are checked gracefully by the engine and skipped if absent.",
+    "required": [
+      { "path": "data/gta3.dat", "why": "Level manifest: lists every IDE/IPL/COLFILE/etc the engine loads. Parsed by CFileLoader::LoadLevel (src/core/FileLoader.cpp) and CGame::Initialise (src/core/Game.cpp:503)." },
+      { "path": "models/gta3.img", "why": "Main streamed model/texture archive, opened with a raw fd by CdStreamInit (src/core/CdStreamPosix.cpp:202) -- hardcoded relative path, asserts if missing." },
+      { "path": "audio/sfx.SDT", "why": "Sound-effect bank descriptor (src/audio/sampman_oal.cpp:78)." },
+      { "path": "audio/sfx.RAW", "why": "Sound-effect bank data (src/audio/sampman_oal.cpp:79)." },
+      { "path": "TEXT/american.gxt", "why": "Default (American English) text table, loaded by CText::Load (src/text/Text.cpp)." },
+      { "path": "data/handling.cfg", "why": "Vehicle handling data (src/vehicles/HandlingMgr.cpp)." },
+      { "path": "data/default.dat", "why": "Default per-level data list (src/core/FileLoader.cpp)." },
+      { "path": "data/default.ide", "why": "Default object definitions (src/core/FileLoader.cpp)." },
+      { "path": "data/gta3.zon", "why": "Zone/map data (src/core/ZoneCull.cpp)." },
+      { "path": "data/carcols.dat", "why": "Vehicle colour data (src/control/Script.cpp / CFileLoader)." },
+      { "path": "data/main.scm", "why": "Compiled main mission script, run by CTheScripts." },
+      { "path": "data/ped.dat", "why": "Ped stats/definitions." },
+      { "path": "data/object.dat", "why": "Object definitions (CObjectData)." },
+      { "path": "data/water.dat", "why": "Water plane data (src/render/WaterLevel.cpp)." },
+      { "path": "data/weapon.dat", "why": "Weapon stats (src/weapons/WeaponInfo.cpp)." }
+    ],
+    "optional": [
+      { "path": "models/txd.img", "why": "Generated/cached texture archive. Checked with CFileMgr::OpenFile first and only added if present (src/core/Streaming.cpp:267); safe to be absent -- re3 builds it from loose TXDs instead." },
+      { "path": "audio", "why": "Streamed radio/mission audio (AUDIO\\*.OPUS via StreamedNameTable, src/audio/sampman.h). Large; individual tracks are only needed for the missions/stations that use them." },
+      { "path": "movies", "why": "FMV intro/cutscenes. Not required for gameplay; skipped entirely if NO_MOVIES is defined." },
+      { "path": "TEXT/english.gxt", "why": "Non-default language text tables; only needed if the user selects that language." },
+      { "path": "TEXT/french.gxt", "why": "See english.gxt." },
+      { "path": "TEXT/german.gxt", "why": "See english.gxt." },
+      { "path": "TEXT/italian.gxt", "why": "See english.gxt." },
+      { "path": "TEXT/spanish.gxt", "why": "See english.gxt." }
+    ]
+  },
+
+  "engineFiles": {
+    "$comment": "Ship with re3 itself (gamefiles/ in this repo) -- not GTA III content, not subject to the copyrighted-asset restriction. Currently unused under the WASM build specifically (see notes) but listed for completeness / native build parity.",
+    "files": [
+      { "path": "gamecontrollerdb.txt", "why": "SDL gamepad mapping DB, loaded by _InputInitialiseJoys (src/skel/glfw/glfw.cpp). Loading is compiled out under __EMSCRIPTEN__ because Emscripten's GLFW port doesn't implement glfwUpdateGamepadMappings (see docs/BROWSER_RUNTIME.md) -- listed here for native-build parity only." }
+    ]
+  },
+
+  "configFiles": {
+    "$comment": "Small, human-editable settings. Not required to pre-exist -- the engine creates them with defaults on first run if absent.",
+    "files": [
+      { "path": "gta3.ini", "location": "asset root", "why": "Legacy version marker read by some installers; not read by re3 itself." },
+      { "path": "gta3.set", "location": "user files directory (see below), not the asset root", "why": "Control bindings and video/audio prefs, read/written by CMenuManager::LoadSettings/SaveSettings (src/core/Frontend.cpp)." }
+    ]
+  },
+
+  "saveFiles": {
+    "$comment": "Player save games. Written under the *user files* directory, never the read-only asset root -- see docs/GAME_ASSETS.md.",
+    "pattern": "GTA3sf<slot>.b",
+    "location": "user files directory",
+    "why": "C_PcSave::SetSaveDirectory / Save (src/save/PCSave.cpp)."
+  },
+
+  "logFiles": {
+    "$comment": "Debug-only output, not read back by the engine.",
+    "files": [
+      { "path": "SCRDBG.LOG", "location": "current working directory at the time it's opened (see src/control/Script.cpp)", "why": "Script debugger log, opened directly with fopen() (bypasses CFileMgr)." }
+    ]
+  },
+
+  "tempFiles": {
+    "$comment": "No engine-managed temp files were found that need special VFS handling; re3 doesn't currently write scratch/cache files outside of saves and SCRDBG.LOG.",
+    "files": []
+  }
+}
