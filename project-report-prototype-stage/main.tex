@@ -3,7 +3,10 @@
 % --- Page Geometry & Margins ---
 \usepackage[margin=1in]{geometry}
 \usepackage{parskip}          % Modern block paragraph spacing
-
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, backgrounds}
 % --- Typography & Readability ---
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -128,12 +131,81 @@ Achieve a playable main menu and stable rendering of initial indoor and outdoor 
 \subsection{System Overview}
 The system architecture bridges the compiled native game logic with standard web platform APIs. Emscripten acts as the intermediary compiler layer, generating a JavaScript runtime bridge that hooks browser user inputs, GPU draws, and file system interactions directly into the compiled WebAssembly heap.
 
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+    actor/.style={rectangle, draw=black, thick, fill=gray!20, rounded corners=3pt, minimum height=2.5em, text width=6.5em, align=center, font=\small\bfseries},
+    usecase/.style={ellipse, draw=black, thick, fill=white, minimum height=2.4em, text width=10em, align=center, font=\small},
+    boundary/.style={rectangle, draw=black!80, thick, dashed, fill=gray!5, inner sep=18pt, rounded corners=6pt},
+    line/.style={draw=black, thick}
+]
+
+    % --- Actors ---
+    \node [actor] (player) {End User / Player};
+    \node [actor, right=11cm of player] (browser) {Browser Engine (Chrome/Firefox)};
+
+    % --- System Boundary & Use Cases ---
+    \node [usecase, right=2.5cm of player, yshift=3.5cm] (uc1) {Bootstrap WASM Module};
+    \node [usecase, below=0.6cm of uc1] (uc2) {Mount Assets to MEMFS / IndexedDB};
+    \node [usecase, below=0.6cm of uc2] (uc3) {Execute C++ Game Engine Logic};
+    \node [usecase, below=0.6cm of uc3] (uc4) {Render 3D Frames via WebGL 2.0};
+    \node [usecase, below=0.6cm of uc4] (uc5) {Process WebAudio Streams};
+    \node [usecase, below=0.6cm of uc5] (uc6) {Capture HTML5 Mouse/Keyboard Inputs};
+
+    % System Boundary Box
+    \begin{scope}[on background layer]
+        \node [boundary, fit=(uc1) (uc6), label={[font=\small\bfseries\color{black!80}]above:WASM GTA III Engine Boundary}] (system_box) {};
+    \end{scope}
+
+    % --- Connections ---
+    % Player interactions
+    \path [line] (player) -- (uc1);
+    \path [line] (player) -- (uc6);
+
+    % Browser interactions
+    \path [line] (browser) -- (uc1);
+    \path [line] (browser) -- (uc2);
+    \path [line] (browser) -- (uc4);
+    \path [line] (browser) -- (uc5);
+
+    % Engine internal relationships
+    \path [line, dashed] (uc1) -- node[left, font=\tiny]{«include»} (uc2);
+    \path [line, dashed] (uc2) -- node[left, font=\tiny]{«include»} (uc3);
+    \path [line, dashed] (uc3) -- node[left, font=\tiny]{«include»} (uc4);
+    \path [line, dashed] (uc3) -- node[left, font=\tiny]{«include»} (uc5);
+
+\end{tikzpicture}
+}
+\caption{Use Case Diagram illustrating system actors, engine boundaries, and web platform integration.}
+\label{fig:use_case}
+\end{figure}
+
+\subsection{Data Flow Analysis}
+The data flow within the WebAssembly execution model maps standard desktop system interactions into asynchronous browser streams. Figure~\ref{fig:dfd0} and Figure~\ref{fig:dfd1} illustrate the high-level context DFD and detailed subsystem data transformations across the virtual filesystem and WebGL render loop.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{dfd_level_0.png}
+    \caption{Context-Level Data Flow Diagram (DFD Level 0).}
+    \label{fig:dfd0}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{dfd_level_1.png}
+    \caption{Subsystem Data Flow Diagram (DFD Level 1).}
+    \label{fig:dfd1}
+\end{figure}
+
 \subsection{Component Specifications}
-\begin{table}[htbp]
+The system architecture consists of several modular subsystems designed to translate desktop dependencies into native browser standards. Table~\ref{tab:specifications} outlines the specific technology stack components and their core operational roles within the WebAssembly execution environment.
+
+\begin{table}[H]
 \centering
 \caption{System Layer Architecture \& Toolchain Setup}
 \label{tab:specifications}
-\begin{tabular}{lll}
+\begin{tabularx}{\textwidth}{l l X}
 \toprule
 \textbf{Layer} & \textbf{Technology Stack} & \textbf{Function / Responsibility} \\
 \midrule
@@ -144,9 +216,8 @@ Audio Pipeline     & WebAudio API / OpenAL    & Handles 3D positional audio stre
 Asset System       & Emscripten Virtual FS    & Virtualizes game archive files (\texttt{.img}/\texttt{.dir}) \\
 Input System       & HTML5 Events / SDL2      & Captures mouse movement and keyboard states \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
-
 \section{Prototype Implementation}
 
 \subsection{Build Toolchain \& WebAssembly Compilation}
@@ -161,8 +232,89 @@ Standard POSIX file operations are bound to Emscripten's MEMFS virtual filesyste
     \item \textbf{WASM Memory Heap:} A contiguous 512 MB block of WebAssembly Linear Memory is pre-allocated to accommodate game state variables, dynamic entity pools, and texture buffers.
     \item \textbf{RenderWare Integration:} RenderWare's native backend functions are translated into OpenGL ES commands, which Emscripten routes directly to WebGL 2.0 contexts embedded inside an HTML5 Canvas element.
 \end{itemize}
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+    node distance=1.2cm and 1.8cm,
+    auto,
+    startstop/.style={ellipse, draw=black, thick, fill=gray!15, text width=9em, text centered, minimum height=2.2em, font=\small\bfseries},
+    process/.style={rectangle, draw=black, thick, fill=white, text width=10em, text centered, rounded corners=2pt, minimum height=2.5em, font=\small},
+    decision/.style={diamond, draw=black, thick, fill=gray!10, text width=6em, text centered, inner sep=1pt, font=\small\bfseries},
+    loopbox/.style={rectangle, draw=black!70, dashed, fill=gray!5, inner sep=12pt, rounded corners=4pt},
+    line/.style={draw=black, -{Latex[length=2.5mm]}, thick}
+]
 
-\section{Testing \& Preliminary Results}
+    % --- COLUMN 1: Bootstrapping & Asset Resolution ---
+    \node [startstop] (start) {Start: Page Load};
+    \node [process, below=0.8cm of start] (fetch) {Fetch WASM Binary \& JS Runtime};
+    \node [process, below=0.8cm of fetch] (memory) {Instantiate WASM 512MB Heap};
+    \node [decision, below=0.8cm of memory] (cache) {Assets in IndexedDB?};
+    
+    \node [process, below left=1.0cm and -0.5cm of cache] (http) {Download Assets via HTTP};
+    \node [process, below=0.8cm of http] (idb) {Write Assets to IndexedDB};
+    \node [process, below right=1.0cm and -0.5cm of cache] (load) {Mount Asset Bytes to MEMFS};
+
+    \node [process, below=3.8cm of cache] (prep) {Process Textures \& 3D Meshes};
+
+    % --- COLUMN 2: Subsystem Initialization & Runtime Main Loop ---
+    \node [process, right=2.2cm of fetch] (webgl) {Initialize WebGL 2.0 Context};
+    \node [process, below=0.8cm of webgl] (hook) {Register Main Engine Loop (\texttt{emscripten\_set\_main\_loop})};
+
+    \node [startstop, below=0.8cm of hook] (tick) {Frame Tick Started};
+    \node [process, below=0.8cm of tick] (input) {Poll Keyboard, Mouse \& Gamepad};
+    \node [process, below=0.8cm of input] (physics) {Update Game Physics \& AI State};
+    \node [process, below=0.8cm of physics] (draw) {Execute WebGL Draw Calls};
+    \node [process, below=0.8cm of draw] (audio) {Stream WebAudio Buffers};
+    \node [process, below=0.8cm of audio] (yield) {Yield Execution to Browser (\texttt{raf})};
+
+    \begin{scope}[on background layer]
+        \node [loopbox, fit=(tick) (input) (physics) (draw) (audio) (yield), label={[font=\small\bfseries\color{black!80}]above:Engine Execution Loop (60 FPS)}] (loop_frame) {};
+    \end{scope}
+
+    % --- PATH CONNECTIONS ---
+    \path [line] (start) -- (fetch);
+    \path [line] (fetch) -- (memory);
+    \path [line] (memory) -- (cache);
+    \path [line] (cache) -| node [near start, above] {No} (http);
+    \path [line] (http) -- (idb);
+    \path [line] (cache) -| node [near start, above] {Yes} (load);
+    \path [line] (idb) |- (prep);
+    \path [line] (load) |- (prep);
+
+    \path [line] (prep.east) -- ++(0.8,0) |- (webgl.west);
+    \path [line] (webgl) -- (hook);
+    \path [line] (hook) -- (tick);
+
+    \path [line] (tick) -- (input);
+    \path [line] (input) -- (physics);
+    \path [line] (physics) -- (draw);
+    \path [line] (draw) -- (audio);
+    \path [line] (audio) -- (yield);
+
+    \path [line] (yield.east) -- ++(0.8,0) |- (tick.east);
+
+\end{tikzpicture}
+}
+\caption{System Activity Diagram showing engine bootstrapping, virtual asset mounting, and browser-yielded rendering main loop.}
+\label{fig:activity}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{sequence_diagram.png}
+    \caption{Sequence Diagram showing WebGL context initialization and WASM call stack.}
+    \label{fig:sequence}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{collaboration_diagram.png}
+    \caption{Collaboration Diagram detailing object interaction paths.}
+    \label{fig:collaboration}
+\end{figure}
+
+\section{Testing & Preliminary Results}
 
 \subsection{Evaluation Methodology}
 Performance tests were conducted on Google Chrome (v120+) using a 1080p display context. Diagnostics focused on load times, WASM memory footprint, rendering frame rates, and input responsiveness.
@@ -188,5 +340,47 @@ Performance tests were conducted on Google Chrome (v120+) using a 1080p display 
     \item \textbf{Multithreading Integration:} Migrate physics computations and audio decoding to Web Workers using WebAssembly pthreads (\texttt{SharedArrayBuffer}).
     \item \textbf{Touch Control Layer:} Add virtual joystick overlays for mobile browser compatibility.
 \end{enumerate}
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+    task/.style={rectangle, draw=black, thick, fill=gray!25, minimum height=1.8em, align=left, font=\small},
+    completed/.style={rectangle, draw=black, thick, fill=black!70, text=white, minimum height=1.8em, align=left, font=\small\bfseries},
+    gridline/.style={draw=black!20, dashed},
+    labelnode/.style={anchor=east, font=\small\bfseries, align=right}
+]
 
+    % --- Grid Timeline Header (Weeks 1 to 10) ---
+    \foreach \w in {1,...,10} {
+        \node[font=\small\bfseries] at (\w*1.3 - 0.65, 0.5) {W\w};
+        \draw[gridline] (\w*1.3, 0.2) -- (\w*1.3, -5.5);
+    }
+    \draw[thick] (0, 0.2) -- (13, 0.2);
+
+    % --- Task Labels ---
+    \node[labelnode] at (-0.2, -0.4) {Toolchain \& Emscripten Setup};
+    \node[labelnode] at (-0.2, -1.2) {re3 Codebase Compilation};
+    \node[labelnode] at (-0.2, -2.0) {WebGL 2.0 Graphics Pipeline};
+    \node[labelnode] at (-0.2, -2.8) {MEMFS Asset Virtualization};
+    \node[labelnode] at (-0.2, -3.6) {WebAudio \& Input Mapping};
+    \node[labelnode] at (-0.2, -4.4) {Performance Optimization};
+    \node[labelnode] at (-0.2, -5.2) {Final Testing \& Documentation};
+
+    % --- Task Bars (Completed vs Planned) ---
+    % Completed Tasks
+    \node[completed, anchor=west, minimum width=2.6cm] at (0, -0.4) {Completed};
+    \node[completed, anchor=west, minimum width=3.9cm] at (1.3, -1.2) {Completed};
+    \node[completed, anchor=west, minimum width=3.9cm] at (3.9, -2.0) {Completed};
+    \node[completed, anchor=west, minimum width=2.6cm] at (5.2, -2.8) {Completed};
+
+    % Planned Future Tasks
+    \node[task, anchor=west, minimum width=2.6cm] at (7.8, -3.6) {Planned};
+    \node[task, anchor=west, minimum width=2.6cm] at (9.1, -4.4) {Planned};
+    \node[task, anchor=west, minimum width=2.6cm] at (10.4, -5.2) {Planned};
+
+\end{tikzpicture}
+}
+\caption{Project Gantt Chart mapping completed prototype milestones and future development phases.}
+\label{fig:gantt}
+\end{figure}
 \end{document}
