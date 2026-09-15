@@ -4,7 +4,7 @@
 **TIET Patiala**
 
 # GTA3-WASM
-
+[📄 Download Prototype Report (PDF)](project-report-prototype-stage/main.pdf)
 **Author(s)**:
 
 `(A)` Antriksh -- Roll No. `1024031034`
