@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+	<title>re3 &mdash; Audio diagnostic</title>
+	<link rel="stylesheet" href="styles.css">
+	<style>
+		#audio-panel {
+			position: absolute;
+			inset: 0;
+			overflow-y: auto;
+			display: flex;
+			align-items: flex-start;
+			justify-content: center;
+			padding: 2rem 1rem;
+		}
+		.audio-card {
+			width: 34rem;
+			max-width: 100%;
+			background: var(--panel-bg);
+			border: 1px solid var(--panel-border);
+			border-radius: 8px;
+			padding: 1.25rem 1.5rem;
+		}
+		.audio-card h2 {
+			margin: 0 0 0.75rem;
+			font-size: 1rem;
+		}
+		.audio-card section {
+			margin-bottom: 1.1rem;
+			padding-bottom: 1.1rem;
+			border-bottom: 1px solid var(--panel-border);
+		}
+		.audio-card section:last-of-type {
+			border-bottom: none;
+		}
+		.audio-card h3 {
+			font-size: 0.8rem;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			color: var(--text-dim);
+			margin: 0 0 0.6rem;
+		}
+		.audio-row {
+			display: flex;
+			align-items: center;
+			gap: 0.6rem;
+			flex-wrap: wrap;
+			margin-bottom: 0.5rem;
+		}
+		.audio-row button {
+			background: #1c2027;
+			color: var(--text);
+			border: 1px solid var(--panel-border);
+			border-radius: 4px;
+			padding: 0.4rem 0.75rem;
+			font-size: 0.8rem;
+			cursor: pointer;
+		}
+		.audio-row button:hover:not(:disabled) { background: #262c35; }
+		.audio-row button:disabled { opacity: 0.4; cursor: not-allowed; }
+		.audio-row label {
+			font-size: 0.78rem;
+			color: var(--text-dim);
+			min-width: 5rem;
+		}
+		.audio-row input[type="range"] { flex: 1; min-width: 8rem; }
+		.audio-state {
+			font-family: var(--mono);
+			font-size: 0.75rem;
+			color: var(--accent);
+			min-width: 5.5rem;
+		}
+		#start-audio-btn {
+			background: var(--accent);
+			color: #04101c;
+			border-color: var(--accent);
+			font-weight: 600;
+			padding: 0.6rem 1.2rem;
+			font-size: 0.9rem;
+		}
+		#start-audio-btn:hover { filter: brightness(1.08); }
+		#audio-controls[data-active="false"] { opacity: 0.4; pointer-events: none; }
+	</style>
+</head>
+<body>
+	<noscript>This page requires JavaScript to load the audio diagnostic module.</noscript>
+
+	<div id="app">
+		<div id="topbar">
+			<span class="status-dot" id="status-dot" data-state="loading"></span>
+			<span class="title">re3 / Audio diagnostic</span>
+			<span id="status-text">starting&hellip;</span>
+			<span class="spacer"></span>
+			<a href="index.html" style="color: var(--text-dim); font-size: 0.8rem; margin-right: 0.5rem;">&larr; back to runtime</a>
+			<button id="diagnostics-btn" type="button" title="Toggle log panel">Log</button>
+		</div>
+
+		<div id="viewport">
+			<div id="error-banner">
+				<div class="error-title">Runtime error</div>
+				<div class="error-detail" id="error-detail"></div>
+			</div>
+
+			<div id="audio-panel">
+				<div class="audio-card">
+					<h2>OpenAL / WebAudio diagnostic</h2>
+					<p style="font-size: 0.78rem; color: var(--text-dim); line-height: 1.5; margin: 0 0 1rem;">
+						No audio is touched until you click below. That click is the user gesture
+						the browser's autoplay policy requires before an AudioContext can produce
+						sound -- see <a href="../docs/AUDIO_WASM.md" target="_blank" rel="noopener" style="color: var(--accent);">docs/AUDIO_WASM.md</a>.
+					</p>
+
+					<div class="audio-row">
+						<button id="start-audio-btn" type="button" disabled>Click to Start Audio Test</button>
+						<span class="audio-state" id="init-state">module loading&hellip;</span>
+					</div>
+
+					<div id="audio-controls" data-active="false">
+						<section>
+							<h3>Sound effect (one-shot)</h3>
+							<div class="audio-row">
+								<button id="play-sfx-btn" type="button">Play SFX</button>
+								<label for="sfx-volume">Volume</label>
+								<input type="range" id="sfx-volume" min="0" max="1" step="0.05" value="1">
+								<span class="audio-state" id="sfx-state">-</span>
+							</div>
+						</section>
+
+						<section>
+							<h3>Music (looping)</h3>
+							<div class="audio-row">
+								<button id="play-music-btn" type="button">Play</button>
+								<button id="pause-music-btn" type="button">Pause</button>
+								<button id="resume-music-btn" type="button">Resume</button>
+								<button id="stop-music-btn" type="button">Stop</button>
+								<span class="audio-state" id="music-state">-</span>
+							</div>
+							<div class="audio-row">
+								<label for="music-volume">Volume</label>
+								<input type="range" id="music-volume" min="0" max="1" step="0.05" value="1">
+							</div>
+						</section>
+
+						<section>
+							<h3>Stereo positioning</h3>
+							<div class="audio-row">
+								<label for="pan-slider">Pan (L/R)</label>
+								<input type="range" id="pan-slider" min="-1" max="1" step="0.1" value="0">
+								<button id="play-pan-btn" type="button">Play at position</button>
+								<span class="audio-state" id="pan-state">-</span>
+							</div>
+						</section>
+					</div>
+				</div>
+			</div>
+
+			<div id="loading-overlay">
+				<div class="spinner"></div>
+				<div id="loading-status">Loading audio diagnostic module&hellip;</div>
+				<div class="progress-track">
+					<div class="progress-fill indeterminate" id="progress-fill"></div>
+				</div>
+			</div>
+		</div>
+
+		<div id="sidepanel" class="open">
+			<div class="panel-section" id="log-section" style="flex: 1;">
+				<h2>Audio diagnostic log</h2>
+				<pre id="log-output"></pre>
+			</div>
+		</div>
+	</div>
+
+	<!-- Generated by Emscripten from audiotest/main.cpp (see audiotest/CMakeLists.txt).
+	     Defines createAudioTestModule() (MODULARIZE=1); does not touch audio on its own. -->
+	<script src="build/audiotest.js"></script>
+	<script src="audiotest-launcher.js"></script>
+</body>
+</html>
