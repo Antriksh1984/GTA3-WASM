@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "web",
+      "runtimeExecutable": "D:/Work/3 wasm/emsdk/python/3.13.3_64bit/python.exe",
+      "runtimeArgs": ["D:/Work/3 wasm/scripts/serve_web.py", "8080", "D:/Work/3 wasm/web", "--dev-assets", "D:/Work/3 wasm/gamefiles"],
+      "port": 8080
+    }
+  ]
+}
