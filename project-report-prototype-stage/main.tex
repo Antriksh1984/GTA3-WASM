@@ -1,0 +1,192 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- Page Geometry & Margins ---
+\usepackage[margin=1in]{geometry}
+\usepackage{parskip}          % Modern block paragraph spacing
+
+% --- Typography & Readability ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{microtype}
+
+% --- Headers & Footers ---
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small\textbf{Prototype Stage Report}}
+\rhead{\small WASM Port of GTA III}
+\cfoot{\small \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% --- Section Styling ---
+\usepackage{titlesec}
+\titleformat{\section}
+  {\normalfont\Large\bfseries}{\thesection}{1em}{}[\titlerule]
+\titlespacing*{\section}{0pt}{2.5ex plus 1ex minus .2ex}{1.2ex plus .2ex}
+
+% --- Highlight Callout Box (Monochrome) ---
+\usepackage[many]{tcolorbox}
+\newtcolorbox{summarybox}[1][]{
+  colback=white,
+  colframe=black,
+  arc=2pt,
+  boxrule=0.8pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt,
+  fonttitle=\bfseries,
+  #1
+}
+
+% --- Tables & Figures ---
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{caption}
+\captionsetup{labelfont=bf, textfont=it, margin=10pt}
+
+% --- Math & Hyperlinks (All Black) ---
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+\hypersetup{
+    hidelinks,
+    pdfauthor={Antriksh, Divyam Jain},
+    pdftitle={WASM Port of Grand Theft Auto 3 - Prototype Report},
+    pdfpagemode=UseOutlines
+}
+
+% =========================================================================
+% DOCUMENT BEGINS
+% =========================================================================
+\begin{document}
+
+% --- Cover Page ---
+\begin{titlepage}
+    \centering
+    \vspace*{1.5cm}
+    
+    {\Huge \textbf{Project Prototype Report}} \\[0.5cm]
+    {\Large \textbf{WebAssembly Port of Grand Theft Auto III}} \\
+    
+    \vspace{1.5cm}
+    \rule{\linewidth}{1pt} \\
+    \vspace{1.5cm}
+    
+    \begin{minipage}{0.48\textwidth}
+        \begin{flushleft} \large
+            \textbf{Prepared By:}\\
+            Antriksh (1024031032)\\
+            Divyam Jain (1024031032)
+        \end{flushleft}
+    \end{minipage}
+    \begin{minipage}{0.48\textwidth}
+        \begin{flushright} \large
+            \textbf{Supervised By:}\\
+            Professor Nisha Thakur
+        \end{flushright}
+    \end{minipage}
+
+    \vfill
+
+    {\large \textbf{Date:} \today}
+\end{titlepage}
+
+% --- Abstract ---
+\begin{abstract}
+\noindent This report details the prototype implementation of porting Grand Theft Auto III to the web browser utilizing WebAssembly (WASM), WebGL 2.0, and the Emscripten toolchain based on the open-source reverse-engineered engine codebase (\texttt{re3}). The project aims to eliminate the need for native platform binaries or external installations by executing legacy C++ game engines natively inside modern web browsers. This prototype demonstrates successful compilation of core C++ engine components, basic WebGL graphics context initialization, asynchronous asset fetching over HTTP, and frame-rate synchronization within browser execution contexts.
+\end{abstract}
+
+\newpage
+
+% --- Table of Contents ---
+\tableofcontents
+\thispagestyle{plain}
+\newpage
+
+% --- Main Body ---
+\section{Introduction \& Objectives}
+
+\subsection{Project Background}
+Historically, AAA desktop games like Grand Theft Auto III relied on native platform architectures (x86/Win32) tied directly to native graphics APIs like DirectX 8/9. Bringing complex legacy C++ codebases to modern browsers requires bypassing traditional platform dependencies. WebAssembly (WASM) provides a low-level, high-performance bytecode format capable of running C/C++ code in client-side browser sandboxes at near-native speed. By leveraging the open-source reverse-engineered GTA III codebase (\texttt{re3}), this project translates standard RenderWare graphics calls and platform abstraction layers into browser-compatible web primitives.
+
+\subsection{Prototype Objectives}
+The scope of this prototype evaluation encompasses the following milestones:
+\begin{itemize}
+    \item Cross-compiling the \texttt{re3} C++ source code to \texttt{.wasm} binaries via the Emscripten toolchain.
+    \item Mapping native RenderWare/OpenGL calls to a WebGL 2.0 browser pipeline.
+    \item Replacing desktop event handling (Win32 API/DirectInput) with browser event listeners and SDL2 input wrappers.
+    \item Evaluating memory management constraints within the browser's 32-bit WASM Linear Memory address space.
+\end{itemize}
+
+\begin{summarybox}[title=Prototype Target State]
+Achieve a playable main menu and stable rendering of initial indoor and outdoor game scenes directly inside Chrome and Firefox without external plugins.
+\end{summarybox}
+
+\section{System Architecture \& Design}
+
+\subsection{System Overview}
+The system architecture bridges the compiled native game logic with standard web platform APIs. Emscripten acts as the intermediary compiler layer, generating a JavaScript runtime bridge that hooks browser user inputs, GPU draws, and file system interactions directly into the compiled WebAssembly heap.
+
+\subsection{Component Specifications}
+\begin{table}[htbp]
+\centering
+\caption{System Layer Architecture \& Toolchain Setup}
+\label{tab:specifications}
+\begin{tabular}{lll}
+\toprule
+\textbf{Layer} & \textbf{Technology Stack} & \textbf{Function / Responsibility} \\
+\midrule
+Source Engine      & C++ / \texttt{re3} Codebase      & Core game state logic and entity handling \\
+Compilation        & Emscripten (LLVM/Clang)  & Translates C++ AST to WebAssembly bytecode \\
+Graphics Pipeline  & WebGL 2.0 / OpenGL ES 3.0 & Renders game geometry, meshes, and textures \\
+Audio Pipeline     & WebAudio API / OpenAL    & Handles 3D positional audio streaming \\
+Asset System       & Emscripten Virtual FS    & Virtualizes game archive files (\texttt{.img}/\texttt{.dir}) \\
+Input System       & HTML5 Events / SDL2      & Captures mouse movement and keyboard states \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Prototype Implementation}
+
+\subsection{Build Toolchain \& WebAssembly Compilation}
+The cross-compilation pipeline utilizes Emscripten to transform native C++ routines into optimized WASM bytecode. The main rendering loop is adapted to prevent thread-blocking within the browser's main thread by replacing execution loops with non-blocking browser animation frame callbacks:
+
+$$\text{Engine Execution Loop} \longrightarrow \texttt{emscripten\_set\_main\_loop(GameLoop, 0, 1)}$$
+
+Standard POSIX file operations are bound to Emscripten's MEMFS virtual filesystem, enabling the C++ engine to read game textures, models, and scripts as if accessing a local hard drive.
+
+\subsection{Runtime Memory \& Graphics Mapping}
+\begin{itemize}
+    \item \textbf{WASM Memory Heap:} A contiguous 512 MB block of WebAssembly Linear Memory is pre-allocated to accommodate game state variables, dynamic entity pools, and texture buffers.
+    \item \textbf{RenderWare Integration:} RenderWare's native backend functions are translated into OpenGL ES commands, which Emscripten routes directly to WebGL 2.0 contexts embedded inside an HTML5 Canvas element.
+\end{itemize}
+
+\section{Testing \& Preliminary Results}
+
+\subsection{Evaluation Methodology}
+Performance tests were conducted on Google Chrome (v120+) using a 1080p display context. Diagnostics focused on load times, WASM memory footprint, rendering frame rates, and input responsiveness.
+
+\subsection{Observed Data}
+\begin{itemize}
+    \item \textbf{Compilation Output Size:} Final compressed build output consists of a $12\,\text{MB}$ JS/WASM package (excluding game assets).
+    \item \textbf{Render Performance:} Stable execution at $30\text{--}60\,\text{FPS}$ during static menu interaction and localized indoor rendering tests.
+    \item \textbf{Memory Allocation:} Average operational memory draw settled at approximately $310\,\text{MB}$ of WASM linear memory heap.
+\end{itemize}
+
+\section{Limitations \& Known Issues}
+
+\begin{itemize}
+    \item \textbf{Asset Loading Latency:} Downloading large monolithic asset files (\texttt{GTA3.IMG}, $\sim 500\,\text{MB}$) over HTTP creates a significant startup delay.
+    \item \textbf{Single-Threaded Constraints:} Audio processing and asset streaming share the main browser thread, causing minor audio micro-stutters during heavy scene transitions.
+\end{itemize}
+
+\section{Future Work \& Roadmap}
+
+\begin{enumerate}
+    \item \textbf{Asset Chunking \& Caching:} Implement HTTP Range Requests and IndexedDB client-side caching to load game models on-demand.
+    \item \textbf{Multithreading Integration:} Migrate physics computations and audio decoding to Web Workers using WebAssembly pthreads (\texttt{SharedArrayBuffer}).
+    \item \textbf{Touch Control Layer:} Add virtual joystick overlays for mobile browser compatibility.
+\end{enumerate}
+
+\end{document}
