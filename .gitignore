@@ -16,6 +16,11 @@
 !/gamefiles/Website/
 !/gamefiles/installscript.vdf
 
+# Same reasoning, for a packaged/zipped copy of the above (e.g. for the
+# signed-URL protected-asset delivery path, see scripts/generate_signed_url.py)
+/gamefiles.zip
+/gamefiles.*.zip
+
 # Generated WASM module output (rebuilt by `cmake --build build-wasm --target
 # re3_wasm`, see docs/WASM_BUILD.md) -- not source.
 /web/build/
