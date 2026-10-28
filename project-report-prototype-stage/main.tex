@@ -46,6 +46,7 @@
 % --- Tables & Figures ---
 \usepackage{booktabs}
 \usepackage{graphicx}
+\usepackage{svg}
 \usepackage{caption}
 \captionsetup{labelfont=bf, textfont=it, margin=10pt}
 
@@ -183,7 +184,7 @@ The system architecture bridges the compiled native game logic with standard web
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\textwidth]{deployment_diagram.png}
+    \includesvg[width=0.85\textwidth]{deployment_diagram}
     \caption{Deployment Diagram illustrating physical node distribution, WebAssembly VM execution environment, WASM linear memory allocation, and client hardware context bindings.}
     \label{fig:deployment}
 \end{figure}
@@ -228,7 +229,7 @@ Input System       & HTML5 Events / SDL2      & Captures mouse movement and keyb
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\textwidth]{component_diagram.png}
+    \includesvg[width=0.85\textwidth]{component_diagram}
     \caption{Component Diagram detailing modular software subsystems, Emscripten bridge layers, re3 engine core, and browser front-end integration.}
     \label{fig:component}
 \end{figure}
