@@ -1,0 +1,147 @@
+<svg id="diagram-svg" width="920" height="980" viewBox="0 0 920 980" xmlns="http://www.w3.org/2000/svg" class="select-none" style="font-family: Inter, -apple-system, sans-serif;">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#000000"></path>
+          </marker>
+        </defs>
+
+        <!-- NODE 1: REMOTE WEB SERVER / CDN (GITHUB PAGES) -->
+        <g id="node-server">
+          <rect x="60" y="30" width="800" height="190" fill="#ffffff" stroke="#000000" stroke-width="3" rx="6"></rect>
+          <rect x="60" y="30" width="800" height="26" fill="#000000" rx="4"></rect>
+          <text x="460" y="47" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700" letter-spacing="1">&lt;&lt;node&gt;&gt; REMOTE WEB SERVER / CDN (GITHUB PAGES)</text>
+
+          <!-- Artifact 1: index.html -->
+          <rect x="90" y="75" width="150" height="60" fill="#ffffff" stroke="#000000" stroke-width="3" rx="4"></rect>
+          <text x="165" y="97" text-anchor="middle" fill="#000000" font-size="10" font-weight="500">&lt;&lt;artifact&gt;&gt;</text>
+          <text x="165" y="115" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">index.html</text>
+
+          <!-- Artifact 2: re3.js Glue -->
+          <rect x="270" y="75" width="170" height="60" fill="#ffffff" stroke="#000000" stroke-width="3" rx="4"></rect>
+          <text x="355" y="97" text-anchor="middle" fill="#000000" font-size="10" font-weight="500">&lt;&lt;artifact&gt;&gt;</text>
+          <text x="355" y="115" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">re3.js (Emscripten Glue)</text>
+
+          <!-- Artifact 3: re3.wasm Binary -->
+          <rect x="470" y="75" width="170" height="60" fill="#ffffff" stroke="#000000" stroke-width="3" rx="4"></rect>
+          <text x="555" y="97" text-anchor="middle" fill="#000000" font-size="10" font-weight="500">&lt;&lt;artifact&gt;&gt;</text>
+          <text x="555" y="115" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">re3.wasm (Binary)</text>
+
+          <!-- Artifact 4: gta3.img Archive -->
+          <rect x="670" y="75" width="160" height="60" fill="#ffffff" stroke="#000000" stroke-width="3" rx="4"></rect>
+          <text x="750" y="97" text-anchor="middle" fill="#000000" font-size="10" font-weight="500">&lt;&lt;artifact&gt;&gt;</text>
+          <text x="750" y="115" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">gta3.img Archive</text>
+
+          <!-- Server Internal Flow -->
+          <path d="M 240 105 L 270 105" stroke="#000000" stroke-width="3" fill="none" marker-end="url(#arrow)"></path>
+          <path d="M 440 105 L 470 105" stroke="#000000" stroke-width="3" fill="none" marker-end="url(#arrow)"></path>
+          <text x="460" y="168" text-anchor="middle" fill="#000000" font-size="11" font-weight="500">HTTPS Static File Hosting &amp; Delivery Pipeline</text>
+        </g>
+
+        <!-- NETWORK PROTOCOL CONNECTIONS (SERVER TO CLIENT) -->
+        <!-- WASM & JS WebFetch Line -->
+        <path d="M 555 135 L 555 275 L 455 275 L 455 430" stroke="#000000" stroke-width="3" fill="none" marker-end="url(#arrow)"></path>
+        <rect x="465" y="265" width="160" height="20" fill="#ffffff" stroke="#000000" stroke-width="1" rx="2"></rect>
+        <text x="545" y="279" text-anchor="middle" fill="#000000" font-size="9" font-weight="600">HTTPS GET / WebFetch (.wasm)</text>
+
+        <!-- Asset Archive Delivery Line -->
+        <path d="M 750 135 L 750 250 L 190 250 L 190 430" stroke="#000000" stroke-width="3" stroke-dasharray="5 4" fill="none" marker-end="url(#arrow)"></path>
+        <rect x="330" y="240" width="180" height="20" fill="#ffffff" stroke="#000000" stroke-width="1" rx="2"></rect>
+        <text x="420" y="254" text-anchor="middle" fill="#000000" font-size="9" font-weight="600">HTTPS GET / WebFetch (Archives)</text>
+
+        <!-- NODE 2: CLIENT HOST MACHINE (PC / MOBILE) -->
+        <g id="node-client">
+          <rect x="40" y="310" width="840" height="630" fill="#ffffff" stroke="#000000" stroke-width="3" rx="6"></rect>
+          <rect x="40" y="310" width="840" height="26" fill="#000000" rx="4"></rect>
+          <text x="460" y="327" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700" letter-spacing="1">&lt;&lt;node&gt;&gt; CLIENT HOST MACHINE (PC / MOBILE)</text>
+
+          <!-- EXECUTION ENVIRONMENT: MODERN WEB BROWSER -->
+          <rect x="60" y="350" width="800" height="570" fill="#ffffff" stroke="#000000" stroke-width="3" rx="6"></rect>
+          <rect x="60" y="350" width="800" height="24" fill="#000000" rx="4"></rect>
+          <text x="460" y="366" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="700" letter-spacing="1">&lt;&lt;execution environment&gt;&gt; MODERN WEB BROWSER</text>
+
+          <!-- 1. STORAGE SUBSYSTEM (OPFS) -->
+          <g id="subsystem-opfs">
+            <rect x="80" y="390" width="220" height="160" fill="#ffffff" stroke="#000000" stroke-width="3" stroke-dasharray="4 4" rx="4"></rect>
+            <text x="190" y="410" text-anchor="middle" fill="#000000" font-size="10" font-weight="700">&lt;&lt;subsystem&gt;&gt; Browser Storage</text>
+            
+            <rect x="100" y="430" width="180" height="90" fill="#ffffff" stroke="#000000" stroke-width="3" rx="4"></rect>
+            <text x="190" y="452" text-anchor="middle" fill="#000000" font-size="9" font-weight="500">&lt;&lt;artifact&gt;&gt;</text>
+            <text x="190" y="470" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">Unpacked Game Data</text>
+            <text x="190" y="488" text-anchor="middle" fill="#000000" font-size="10" font-weight="500">(OPFS / IndexedDB Cache)</text>
+            <text x="190" y="504" text-anchor="middle" fill="#000000" font-size="9" font-weight="400">gta3.img &amp; Player Saves</text>
+          </g>
+
+          <!-- 2. WEBASSEMBLY VIRTUAL MACHINE CONTEXT -->
+          <g id="subsystem-wasm-vm">
+            <rect x="330" y="390" width="510" height="160" fill="#ffffff" stroke="#000000" stroke-width="3" stroke-dasharray="4 4" rx="4"></rect>
+            <text x="585" y="410" text-anchor="middle" fill="#000000" font-size="10" font-weight="700">&lt;&lt;execution environment&gt;&gt; WebAssembly Virtual Machine</text>
+
+            <!-- re3 Engine Instance -->
+            <rect x="350" y="430" width="210" height="90" fill="#ffffff" stroke="#000000" stroke-width="3" rx="4"></rect>
+            <text x="455" y="452" text-anchor="middle" fill="#000000" font-size="9" font-weight="500">&lt;&lt;artifact&gt;&gt;</text>
+            <text x="455" y="470" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">re3 Engine Instance</text>
+            <text x="455" y="488" text-anchor="middle" fill="#000000" font-size="10" font-weight="500">(Compiled C++ Core)</text>
+            <text x="455" y="504" text-anchor="middle" fill="#000000" font-size="9" font-weight="400">Physics, AI, Game Logic</text>
+
+            <!-- Linear Memory -->
+            <rect x="600" y="430" width="220" height="90" fill="#ffffff" stroke="#000000" stroke-width="3" rx="4"></rect>
+            <text x="710" y="452" text-anchor="middle" fill="#000000" font-size="9" font-weight="500">&lt;&lt;artifact&gt;&gt;</text>
+            <text x="710" y="470" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">WASM Linear Memory</text>
+            <text x="710" y="488" text-anchor="middle" fill="#000000" font-size="10" font-weight="500">(ArrayBuffer Heap)</text>
+            <text x="710" y="504" text-anchor="middle" fill="#000000" font-size="9" font-weight="400">Shared Dynamic Allocation</text>
+
+            <!-- Engine to Memory Connection -->
+            <path d="M 560 475 L 600 475" stroke="#000000" stroke-width="3" fill="none" marker-end="url(#arrow)"></path>
+            <rect x="562" y="465" width="36" height="14" fill="#ffffff" stroke="#000000" stroke-width="1" rx="2"></rect>
+            <text x="580" y="475" text-anchor="middle" fill="#000000" font-size="8" font-weight="600">Allocates</text>
+          </g>
+
+          <!-- OPFS to Engine VFS Mount Connection -->
+          <path d="M 280 475 L 350 475" stroke="#000000" stroke-width="3" fill="none" marker-end="url(#arrow)"></path>
+          <rect x="290" y="465" width="50" height="14" fill="#ffffff" stroke="#000000" stroke-width="1" rx="2"></rect>
+          <text x="315" y="475" text-anchor="middle" fill="#000000" font-size="8" font-weight="600">Mounts VFS</text>
+
+          <!-- 3. BROWSER HARDWARE SUBSYSTEMS & DRIVERS -->
+          <g id="subsystem-hardware">
+            <rect x="80" y="580" width="760" height="320" fill="#ffffff" stroke="#000000" stroke-width="3" stroke-dasharray="4 4" rx="4"></rect>
+            <text x="460" y="600" text-anchor="middle" fill="#000000" font-size="10" font-weight="700">&lt;&lt;subsystem&gt;&gt; Browser Hardware Subsystems &amp; Host Driver APIs</text>
+
+            <!-- DOM Event Listeners -->
+            <rect x="110" y="630" width="210" height="110" fill="#ffffff" stroke="#000000" stroke-width="3" rx="4"></rect>
+            <text x="215" y="655" text-anchor="middle" fill="#000000" font-size="10" font-weight="500">&lt;&lt;subsystem&gt;&gt;</text>
+            <text x="215" y="675" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">DOM Event Listeners</text>
+            <text x="215" y="695" text-anchor="middle" fill="#000000" font-size="10" font-weight="500">Pointer Lock / Mouse API</text>
+            <text x="215" y="710" text-anchor="middle" fill="#000000" font-size="10" font-weight="500">Keyboard &amp; Touch API</text>
+
+            <!-- WebGL2 Context -->
+            <rect x="355" y="630" width="220" height="110" fill="#ffffff" stroke="#000000" stroke-width="3" rx="4"></rect>
+            <text x="465" y="655" text-anchor="middle" fill="#000000" font-size="10" font-weight="500">&lt;&lt;context&gt;&gt;</text>
+            <text x="465" y="675" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">WebGL2 Render Context</text>
+            <text x="465" y="695" text-anchor="middle" fill="#000000" font-size="10" font-weight="500">GPU Hardware Pipeline</text>
+            <text x="465" y="710" text-anchor="middle" fill="#000000" font-size="10" font-weight="500">(OpenGL ES 2.0 Translation)</text>
+
+            <!-- WebAudio Pipeline -->
+            <rect x="605" y="630" width="210" height="110" fill="#ffffff" stroke="#000000" stroke-width="3" rx="4"></rect>
+            <text x="710" y="655" text-anchor="middle" fill="#000000" font-size="10" font-weight="500">&lt;&lt;context&gt;&gt;</text>
+            <text x="710" y="675" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">WebAudio Pipeline</text>
+            <text x="710" y="695" text-anchor="middle" fill="#000000" font-size="10" font-weight="500">Sound Device Driver</text>
+            <text x="710" y="710" text-anchor="middle" fill="#000000" font-size="10" font-weight="500">(OpenAL Soft Nodes)</text>
+
+            <!-- CONNECTIONS TO HARDWARE API CONTEXTS -->
+            <!-- DOM Events -> Engine -->
+            <path d="M 215 630 L 215 520 L 350 520" stroke="#000000" stroke-width="3" fill="none" marker-end="url(#arrow)"></path>
+            <rect x="220" y="555" width="105" height="18" fill="#ffffff" stroke="#000000" stroke-width="1" rx="2"></rect>
+            <text x="272" y="567" text-anchor="middle" fill="#000000" font-size="8" font-weight="600">Dispatches Input Events</text>
+
+            <!-- Engine -> WebGL Context -->
+            <path d="M 455 520 L 465 630" stroke="#000000" stroke-width="3" fill="none" marker-end="url(#arrow)"></path>
+            <rect x="420" y="565" width="85" height="18" fill="#ffffff" stroke="#000000" stroke-width="1" rx="2"></rect>
+            <text x="462" y="577" text-anchor="middle" fill="#000000" font-size="8" font-weight="600">Draw Commands</text>
+
+            <!-- Engine -> WebAudio Context -->
+            <path d="M 520 520 L 520 560 L 710 560 L 710 630" stroke="#000000" stroke-width="3" fill="none" marker-end="url(#arrow)"></path>
+            <rect x="580" y="551" width="100" height="18" fill="#ffffff" stroke="#000000" stroke-width="1" rx="2"></rect>
+            <text x="630" y="563" text-anchor="middle" fill="#000000" font-size="8" font-weight="600">Audio PCM Streams</text>
+          </g>
+        </g>
+      </svg>

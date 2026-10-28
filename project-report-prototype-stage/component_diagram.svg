@@ -1,0 +1,151 @@
+<svg id="diagram-svg" width="920" height="980" viewBox="0 0 920 980" xmlns="http://www.w3.org/2000/svg" class="select-none" style="font-family: &quot;JetBrains Mono&quot;, monospace;">
+        <defs>
+          <!-- Black Arrowhead Marker -->
+          <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#000000"></path>
+          </marker>
+        </defs>
+
+        <!-- 1. FRONT-END INPUT & CONTROL LAYER -->
+        <g id="layer-frontend">
+          <rect x="160" y="30" width="600" height="120" fill="#ffffff" stroke="#000000" stroke-width="2" rx="6"></rect>
+          <rect x="160" y="30" width="600" height="26" fill="#000000" rx="4"></rect>
+          <text x="460" y="47" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700" letter-spacing="1">1. FRONT-END INPUT &amp; CONTROL LAYER</text>
+
+          <!-- Node: JS Asset Loader -->
+          <rect x="190" y="70" width="240" height="60" fill="#ffffff" stroke="#000000" stroke-width="2" rx="4"></rect>
+          <text x="310" y="97" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">JS Asset Loader &amp;</text>
+          <text x="310" y="114" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">Runtime Controller</text>
+
+          <!-- Node: DOM Event Handler -->
+          <rect x="490" y="70" width="240" height="60" fill="#ffffff" stroke="#000000" stroke-width="2" rx="4"></rect>
+          <text x="610" y="97" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">DOM Event Handler</text>
+          <text x="610" y="114" text-anchor="middle" fill="#000000" font-size="11" font-weight="500">(Pointer Lock / Keyboard)</text>
+        </g>
+
+        <!-- 2. STORAGE LAYER -->
+        <g id="layer-storage">
+          <rect x="50" y="210" width="240" height="120" fill="#ffffff" stroke="#000000" stroke-width="2" rx="6"></rect>
+          <rect x="50" y="210" width="240" height="26" fill="#000000" rx="4"></rect>
+          <text x="170" y="227" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700" letter-spacing="1">2. BROWSER STORAGE LAYER</text>
+
+          <!-- Node: OPFS Cache -->
+          <rect x="70" y="250" width="200" height="60" fill="#ffffff" stroke="#000000" stroke-width="2" rx="4"></rect>
+          <text x="170" y="277" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">OPFS / IndexedDB</text>
+          <text x="170" y="294" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">Asset Cache</text>
+        </g>
+
+        <!-- 3. re3 ENGINE CORE (WebAssembly Module) -->
+        <g id="layer-engine">
+          <rect x="340" y="200" width="530" height="300" fill="#ffffff" stroke="#000000" stroke-width="2" rx="6"></rect>
+          <rect x="340" y="200" width="530" height="26" fill="#000000" rx="4"></rect>
+          <text x="605" y="217" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700" letter-spacing="1">3. re3 ENGINE CORE (WebAssembly Module)</text>
+
+          <!-- Node: Core Engine -->
+          <rect x="505" y="240" width="200" height="60" fill="#ffffff" stroke="#000000" stroke-width="2" rx="4"></rect>
+          <text x="605" y="267" text-anchor="middle" fill="#000000" font-size="13" font-weight="700">re3 Core Engine</text>
+          <text x="605" y="284" text-anchor="middle" fill="#000000" font-size="11" font-weight="500">(Physics, Scripting, AI)</text>
+
+          <!-- Node: Stream Loader -->
+          <rect x="365" y="420" width="150" height="60" fill="#ffffff" stroke="#000000" stroke-width="2" rx="4"></rect>
+          <text x="440" y="447" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">Stream Loader</text>
+          <text x="440" y="464" text-anchor="middle" fill="#000000" font-size="11" font-weight="500">(.img / .dir)</text>
+
+          <!-- Node: RenderWare -->
+          <rect x="530" y="420" width="150" height="60" fill="#ffffff" stroke="#000000" stroke-width="2" rx="4"></rect>
+          <text x="605" y="447" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">RenderWare</text>
+          <text x="605" y="464" text-anchor="middle" fill="#000000" font-size="11" font-weight="500">Abstraction Layer</text>
+
+          <!-- Node: OpenAL Core -->
+          <rect x="695" y="420" width="150" height="60" fill="#ffffff" stroke="#000000" stroke-width="2" rx="4"></rect>
+          <text x="770" y="447" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">OpenAL Audio</text>
+          <text x="770" y="464" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">Engine</text>
+
+          <!-- Internal Dispatch Lines -->
+          <path d="M 605 300 L 605 420" stroke="#000000" stroke-width="3" fill="none" marker-end="url(#arrow)"></path>
+          <path d="M 570 300 L 440 420" stroke="#000000" stroke-width="3" fill="none" marker-end="url(#arrow)"></path>
+          <path d="M 640 300 L 770 420" stroke="#000000" stroke-width="3" fill="none" marker-end="url(#arrow)"></path>
+        </g>
+
+        <!-- 4. EMSCRIPTEN BINDING & TRANSLATION LAYER -->
+        <g id="layer-emscripten">
+          <rect x="160" y="570" width="600" height="130" fill="#ffffff" stroke="#000000" stroke-width="2" rx="6"></rect>
+          <rect x="160" y="570" width="600" height="26" fill="#000000" rx="4"></rect>
+          <text x="460" y="587" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700" letter-spacing="1">4. EMSCRIPTEN BINDING &amp; TRANSLATION LAYER</text>
+
+          <!-- Node: MEMFS -->
+          <rect x="190" y="615" width="170" height="65" fill="#ffffff" stroke="#000000" stroke-width="2" rx="4"></rect>
+          <text x="275" y="642" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">Emscripten MEMFS</text>
+          <text x="275" y="659" text-anchor="middle" fill="#000000" font-size="11" font-weight="500">(Virtual File System)</text>
+
+          <!-- Node: WebGL Wrapper -->
+          <rect x="375" y="615" width="170" height="65" fill="#ffffff" stroke="#000000" stroke-width="2" rx="4"></rect>
+          <text x="460" y="642" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">OpenGL ES 2.0 to</text>
+          <text x="460" y="659" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">WebGL2 Wrapper</text>
+
+          <!-- Node: WebAudio Bridge -->
+          <rect x="560" y="615" width="170" height="65" fill="#ffffff" stroke="#000000" stroke-width="2" rx="4"></rect>
+          <text x="645" y="642" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">OpenAL Soft to</text>
+          <text x="645" y="659" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">WebAudio Bridge</text>
+        </g>
+
+        <!-- 5. BROWSER OUTPUT & RENDER LAYER -->
+        <g id="layer-output">
+          <rect x="250" y="770" width="420" height="120" fill="#ffffff" stroke="#000000" stroke-width="2" rx="6"></rect>
+          <rect x="250" y="770" width="420" height="26" fill="#000000" rx="4"></rect>
+          <text x="460" y="787" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700" letter-spacing="1">5. BROWSER OUTPUT &amp; RENDER LAYER</text>
+
+          <!-- Node: Canvas -->
+          <rect x="280" y="810" width="170" height="60" fill="#ffffff" stroke="#000000" stroke-width="2" rx="4"></rect>
+          <text x="365" y="837" text-anchor="middle" fill="#000000" font-size="13" font-weight="700">HTML5 Canvas</text>
+          <text x="365" y="854" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">&amp; UI Context</text>
+
+          <!-- Node: WebAudio API -->
+          <rect x="470" y="810" width="170" height="60" fill="#ffffff" stroke="#000000" stroke-width="2" rx="4"></rect>
+          <text x="555" y="837" text-anchor="middle" fill="#000000" font-size="13" font-weight="700">Web Audio API</text>
+          <text x="555" y="854" text-anchor="middle" fill="#000000" font-size="12" font-weight="700">Audio Node Pipeline</text>
+        </g>
+
+        <!-- CONNECTING ARROWS & LABELS -->
+
+        <!-- JS Loader to OPFS Cache -->
+        <path d="M 250 130 L 250 165 L 170 165 L 170 250" stroke="#000000" stroke-width="3" fill="none" marker-end="url(#arrow)"></path>
+        <rect x="150" y="156" width="120" height="18" fill="#ffffff" stroke="#000000" stroke-width="1" rx="2"></rect>
+        <text x="210" y="169" text-anchor="middle" fill="#000000" font-size="9" font-weight="600">Loads &amp; Caches Assets</text>
+
+        <!-- DOM Events to Core Engine -->
+        <path d="M 610 130 L 610 240" stroke="#000000" stroke-width="3" fill="none" marker-end="url(#arrow)"></path>
+        <rect x="550" y="156" width="100" height="18" fill="#ffffff" stroke="#000000" stroke-width="1" rx="2"></rect>
+        <text x="600" y="169" text-anchor="middle" fill="#000000" font-size="9" font-weight="600">Dispatches Events</text>
+
+        <!-- OPFS Cache to MEMFS -->
+        <path d="M 170 310 L 170 540 L 250 540 L 250 615" stroke="#000000" stroke-width="3" fill="none" marker-end="url(#arrow)"></path>
+        <rect x="120" y="531" width="100" height="18" fill="#ffffff" stroke="#000000" stroke-width="1" rx="2"></rect>
+        <text x="170" y="544" text-anchor="middle" fill="#000000" font-size="9" font-weight="600">Mounts Game Files</text>
+
+        <!-- Stream Loader to MEMFS -->
+        <path d="M 440 480 L 440 530 L 290 530 L 290 615" stroke="#000000" stroke-width="3" fill="none" marker-end="url(#arrow)"></path>
+        <rect x="310" y="521" width="110" height="18" fill="#ffffff" stroke="#000000" stroke-width="1" rx="2"></rect>
+        <text x="365" y="534" text-anchor="middle" fill="#000000" font-size="9" font-weight="600">Reads Game Archives</text>
+
+        <!-- RenderWare to WebGL Wrapper -->
+        <path d="M 605 480 L 605 520 L 460 520 L 460 615" stroke="#000000" stroke-width="3" fill="none" marker-end="url(#arrow)"></path>
+        <rect x="495" y="511" width="90" height="18" fill="#ffffff" stroke="#000000" stroke-width="1" rx="2"></rect>
+        <text x="540" y="524" text-anchor="middle" fill="#000000" font-size="9" font-weight="600">Draw Commands</text>
+
+        <!-- OpenAL Core to WebAudio Bridge -->
+        <path d="M 770 480 L 770 540 L 645 540 L 645 615" stroke="#000000" stroke-width="3" fill="none" marker-end="url(#arrow)"></path>
+        <rect x="680" y="531" width="80" height="18" fill="#ffffff" stroke="#000000" stroke-width="1" rx="2"></rect>
+        <text x="720" y="544" text-anchor="middle" fill="#000000" font-size="9" font-weight="600">Audio Streams</text>
+
+        <!-- WebGL Wrapper to Canvas -->
+        <path d="M 460 680 L 460 725 L 365 725 L 365 810" stroke="#000000" stroke-width="3" fill="none" marker-end="url(#arrow)"></path>
+        <rect x="375" y="716" width="90" height="18" fill="#ffffff" stroke="#000000" stroke-width="1" rx="2"></rect>
+        <text x="420" y="729" text-anchor="middle" fill="#000000" font-size="9" font-weight="600">Renders Frames</text>
+
+        <!-- WebAudio Bridge to WebAudio API -->
+        <path d="M 645 680 L 645 725 L 555 725 L 555 810" stroke="#000000" stroke-width="3" fill="none" marker-end="url(#arrow)"></path>
+        <rect x="560" y="716" width="80" height="18" fill="#ffffff" stroke="#000000" stroke-width="1" rx="2"></rect>
+        <text x="600" y="729" text-anchor="middle" fill="#000000" font-size="9" font-weight="600">Outputs Sound</text>
+
+      </svg>
