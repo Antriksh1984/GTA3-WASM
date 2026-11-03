@@ -4,13 +4,13 @@
 **TIET Patiala**
 
 # GTA3-WASM
-[📄 Download Prototype Report (PDF)](project-report-prototype-stage/main.pdf)
+[ 📄 Download Final Report (PDF)](project-report-final/main.pdf)
 **Author(s)**:
 
 `(A)` Antriksh -- Roll No. `1024031034`
 `(D)` Divam -- Roll No. `1024031032`
 
-GTA3-WASM is a WebAssembly port of [re3](https://github.com/GTAmodding/re3)
+GTA3-WASM is a WebAssembly port of [re3](https://github.com/Hezkore/hez-gta-re3)
 -- a reverse-engineered, source-compatible build of Grand Theft Auto III --
 so that it runs entirely in a browser tab via WebGL2, with no native
 install and no plugin.
