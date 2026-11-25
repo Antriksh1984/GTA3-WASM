@@ -43,31 +43,17 @@ running the local dev server).
 
 ## Docs
 
-The `docs/` folder is an organised collection of markdown (`md`) files. The
-build procedure uses the [`mkdocs`](https://www.mkdocs.org/) backend, using
-[Material for MkDocs](https://squidfunk.github.io/mkdocs-material/). Any
-commit to the `master`/`main` branch triggers a CI/CD-based build and
-deployment of the documentation, including the journals (see
-`.github/workflows/mkdocs.yml`).
+All technical documentation, subsystem porting notes, and weekly progress logs are maintained directly in this repository:
 
-For a local dev version of the docs, for viewing and testing, install the
-local env (`pip install -r` the plugin list in
-`.github/workflows/mkdocs.yml`, or see `pyproject.toml`) and run:
+- **[`docs/`](docs/)** — Complete engineering write-ups covering the Emscripten build pipeline, WebGL2 compatibility, WebAudio porting, browser input shims, IndexedDB save persistence, and gameplay stability.
+- **[`manual.md`](manual.md)** — Step-by-step setup guide for compiling the WebAssembly module, packaging local game assets, and running the local development server.
+- **[`journals/`](journals/)** — Weekly development logs for both team members (`1024031032-divam` and `1024031034-antriksh`).
 
-```shell
+To preview the documentation site locally with MkDocs:
+
+```bash
+pip install -r pyproject.toml
 make docs
-```
-
-### Local `env` for `docs`
-
-```shell
-python -m venv .venv
-source .venv/bin/activate   # or .venv\Scripts\activate on Windows
-pip install mkdocs mkdocs-material mkdocs-material-extensions \
-  mkdocs-literate-nav mkdocs-section-index \
-  mkdocs-git-revision-date-localized-plugin \
-  mkdocs-git-authors-plugin pymdown-extensions
-```
 
 ## Credits & Upstream
 
