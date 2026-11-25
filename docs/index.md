@@ -1,35 +1,15 @@
-![Tiet Logo](assets/tiet-logo.svg){ .tiet-logo }
+# GTA3-WASM — Grand Theft Auto III in WebAssembly
 
-**UCS503: Software Engineering (Project)**
-**TIET Patiala**
+**Course:** UCS503: Software Engineering (Project) — TIET Patiala  
+**Authors:** Antriksh (`1024031034`), Divam (`1024031032`)
 
-# GTA3-WASM
+## Overview
+**GTA3-WASM** is a browser-native WebAssembly port of [`re3`](https://github.com/halpz/re3), the open-source reverse-engineered engine for *Grand Theft Auto III*. Built with the Emscripten toolchain, the project runs the 3D engine directly inside a modern browser tab using WebGL 2.0, WebAudio, Pointer Lock input shims, and client-side IndexedDB (`IDBFS`) save persistence—requiring no native installation or browser plugins.
 
-**Author(s)**:
+> **Disclaimer:** This repository contains engine source code, WebAssembly shims, build tooling, and the web launcher only. Users must supply their own legally obtained PC copy of *Grand Theft Auto III* data files.
 
-`(A)` Antriksh -- Roll No. `1024031034`
-`(D)` Divam -- Roll No. `1024031032`
-
-GTA3-WASM is a WebAssembly build of [re3](https://github.com/GTAmodding/re3)
-(a reverse-engineered, source-compatible build of Grand Theft Auto III) that
-runs entirely in a browser tab via WebGL2 -- no native install, no plugin.
-
-**This repository does not contain, download, or distribute any GTA III
-game data.** You need your own legally obtained copy of GTA III.
-
-## Installation
-
-See the [user manual](https://github.com/Antriksh1984/GTA3-WASM/blob/master/manual.md)
-in the repository root for the full build and run guide (prerequisites,
-emsdk activation, asset packaging, local dev server).
-
-## Engineering docs
-
-The pages under **Engineering** in the navigation cover the internals of
-the WASM port -- audio, input, the browser main loop, threading, saves,
-WebGL compatibility, and so on.
-
-## Journals
-
-Weekly journals for each team member are under **Journals** in the
-navigation.
+## Engineering Documentation Index
+- **Build & Boot:** [WASM Build Pipeline](WASM_BUILD.md) · [Game Asset Mounting](GAME_ASSETS.md) · [First Boot Guide](FIRST_BOOT.md)
+- **Core Architecture:** [WASM Porting Audit](WASM_PORTING_AUDIT.md) · [Browser Runtime](BROWSER_RUNTIME.md) · [Browser Main Loop](BROWSER_MAIN_LOOP.md) · [Threading in WASM](THREADING_WASM.md)
+- **Subsystems:** [WebGL2 Compatibility](WEBGL_COMPATIBILITY.md) · [WebAudio & OpenAL](AUDIO_WASM.md) · [Browser Input & Pointer Lock](BROWSER_INPUT.md) · [IndexedDB Save Persistence](SAVES_WASM.md)
+- **Debugging & Stability:** [Menu-to-Gameplay Debugging](MENU_TO_GAMEPLAY_DEBUGGING.md) · [WASM Gameplay Stability](WASM_GAMEPLAY_STABILITY.md)
