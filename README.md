@@ -1,7 +1,5 @@
-![Tiet Logo](assets/tiet-logo.svg){ .tiet-logo }
-
-**UCS503: Software Engineering (Project)**
-**TIET Patiala**
+<img src="assets/logomob.webp" alt="TIET Logo" width="60">
+UCS503: Software Engineering (Project) TIET Patiala
 
 # GTA3-WASM
 [ 📄 Download Final Report (PDF)](project-report-final/main.pdf)
