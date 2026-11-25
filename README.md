@@ -47,7 +47,7 @@ All technical documentation, subsystem porting notes, and weekly progress logs a
 
 - **[`docs/`](docs/)** — Complete engineering write-ups covering the Emscripten build pipeline, WebGL2 compatibility, WebAudio porting, browser input shims, IndexedDB save persistence, and gameplay stability.
 - **[`manual.md`](manual.md)** — Step-by-step setup guide for compiling the WebAssembly module, packaging local game assets, and running the local development server.
-- **[`journals/`](journals/)** — Weekly development logs for both team members (`1024031032-divam` and `1024031034-antriksh`).
+- **[`journals/`](journals/)** — Weekly development logs for both team members (`1024031032-divyam` and `1024031034-antriksh`).
 
 To preview the documentation site locally with MkDocs:
 
