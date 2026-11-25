@@ -6,7 +6,7 @@ UCS503: Software Engineering (Project) TIET Patiala
 **Author(s)**:
 
 `(A)` Antriksh -- Roll No. `1024031034`
-`(D)` Divam -- Roll No. `1024031032`
+`(D)` Divyam -- Roll No. `1024031032`
 
 GTA3-WASM is a WebAssembly port of [re3](https://github.com/Hezkore/hez-gta-re3)
 -- a reverse-engineered, source-compatible build of Grand Theft Auto III --
