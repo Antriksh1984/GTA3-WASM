@@ -51,10 +51,7 @@ All technical documentation, subsystem porting notes, and weekly progress logs a
 
 To preview the documentation site locally with MkDocs:
 
-```bash
-pip install -r pyproject.toml
-make docs
-```
+
 ## Credits & Upstream
 
 This project builds directly on top of the
